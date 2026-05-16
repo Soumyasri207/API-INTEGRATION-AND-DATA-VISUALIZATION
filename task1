@@ -1,0 +1,57 @@
+import requests
+import pandas as pd
+import matplotlib.pyplot as plt
+import requests
+import seaborn as sns
+
+# Fetch data from API
+url = "https://jsonplaceholder.typicode.com/users"
+response = requests.get(url)
+
+# Convert response to JSON
+data = response.json()
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+# Print data
+print(df[['id', 'name', 'username', 'email']])
+
+# Create a numeric column
+df['name_length'] = df['name'].apply(len)
+
+# Set seaborn style
+sns.set(style="whitegrid")
+
+# Bar Plot
+plt.figure(figsize=(10, 5))
+sns.barplot(x='username', y='name_length', data=df)
+
+plt.title("Username vs Name Length")
+plt.xlabel("Username")
+plt.ylabel("Name Length")
+
+plt.xticks(rotation=45)
+plt.show()
+
+# Count Plot
+plt.figure(figsize=(8, 5))
+sns.countplot(x='name_length', data=df)
+
+plt.title("Distribution of Name Lengths")
+plt.xlabel("Name Length")
+plt.ylabel("Count")
+
+plt.show()
+
+# Pie Chart
+plt.figure(figsize=(8, 8))
+
+plt.pie(
+    df['name_length'],
+    labels=df['username'],
+    autopct='%1.1f%%'
+)
+
+plt.title("Percentage of Name Length")
+plt.show()
